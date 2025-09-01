@@ -50,10 +50,14 @@ const login = asyncHandler(async (req, res) => {
 
   const token = existedUser.generateToken();
   const loggedInUser = await User.findById(existedUser._id).select("-password");
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
   return res
     .status(200)
-    .cookie("token", token)
+    .cookie("token", token,options)
     .json(new ApiResponse(200, loggedInUser, "User loggedIn Successfully"));
 });
 
