@@ -5,6 +5,7 @@ import User from "../models/user.model.js";
 export const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies?.token;
+console.log(token);
 
     if (!token) {
       throw new ApiError(401, "Not authorized, no token");
