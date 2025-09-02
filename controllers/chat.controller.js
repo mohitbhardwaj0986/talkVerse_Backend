@@ -67,10 +67,11 @@ const createUserChat = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Chat title is required");
   }
 
-  const newChat = await UserChat.create({
-    title: title.trim(),
-    members: [userId], // ✅ array of members
-  });
+ const newChat = await UserChat.create({
+  title: title.trim(),
+  members: [userId],
+  inviteToken: crypto.randomUUID(), // only if you want always unique token
+});
 
   return res
     .status(201)

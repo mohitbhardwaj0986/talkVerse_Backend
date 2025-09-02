@@ -13,8 +13,7 @@ const userChatSchema = new mongoose.Schema(
       },
     ],
     inviteToken: {
-      type: String,
-      unique: true,
+      type: String||null,
     },
   },
   { timestamps: true }
@@ -23,4 +22,3 @@ const userChatSchema = new mongoose.Schema(
 const UserChat = mongoose.model("UserChat", userChatSchema);
 
 export default UserChat;
-    
