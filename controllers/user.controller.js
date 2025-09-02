@@ -50,11 +50,12 @@ const login = asyncHandler(async (req, res) => {
 
   const token = existedUser.generateToken();
   const loggedInUser = await User.findById(existedUser._id).select("-password");
-   const options = {
+   const isProduction = process.env.NODE_ENV === "production";
+  const options = {
     httpOnly: true,
-    secure: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   };
-
 
   return res
     .status(200)
