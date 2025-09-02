@@ -50,22 +50,36 @@ const login = asyncHandler(async (req, res) => {
 
   const token = existedUser.generateToken();
   const loggedInUser = await User.findById(existedUser._id).select("-password");
- const options = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // secure only in prod
-  sameSite: "none", // allow cross-site cookies
-};
+   const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
 
   return res
     .status(200)
-    .cookie("token", token,options)
+    .cookie("token", token, options)
     .json(new ApiResponse(200, loggedInUser, "User loggedIn Successfully"));
 });
 
 const logout = asyncHandler(async (req, res) => {
-  res.clearCookie("token",);
+  res.clearCookie("token");
 
-  return res.status(200).json(new ApiResponse(200,{},"User loggedOut Successfully"));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User loggedOut Successfully"));
 });
 
-export { register, login, logout };
+const getUser = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User fetched successfully"));
+});
+
+export { register, login, logout, getUser };
